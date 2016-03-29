@@ -18,4 +18,4 @@ Look at [/examples](examples/sample.js) for usage.
 
 ## License
 
-This project is licenced under the [MIT License](http://opensource.org/licenses/mit-license.html).
+react-native-slide-down-panel is available under the MIT license. See the LICENSE file for more info.
