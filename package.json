@@ -2,7 +2,7 @@
   "name": "react-native-slide-down-panel",
   "version": "1.0.0",
   "description": "react native slide down panel",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/holyxiaoxin/react-native-slide-down-panel.git"
