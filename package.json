@@ -1,0 +1,26 @@
+{
+  "name": "react-native-slide-down-panel",
+  "version": "1.0.0",
+  "description": "react native slide down panel",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/holyxiaoxin/react-native-slide-down-panel.git"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "react-native",
+    "slide",
+    "panel",
+    "slide-down-panel"
+  ],
+  "peerDependencies": {
+    "react-native": ">=0.22.0 || 0.23.0-rc1"
+  },
+  "author": "Lim Jia Rong <jr.loves.maths@gmail.com>",
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/ninamanalo19/react-native-slide-down-panel/blob/master/LICENSE"
+  }
+}
