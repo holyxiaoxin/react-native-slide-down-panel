@@ -1,4 +1,4 @@
-import React, { Dimensions } from 'react-native';
+import React, { Component, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 var BASE_CONTAINER_HEIGHT = 40;
