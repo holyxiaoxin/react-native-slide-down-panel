@@ -4,9 +4,9 @@ Inspired by [react-native-sliding-up-panel](https://github.com/ninamanalo19/reac
 
 [![npm version](https://badge.fury.io/js/react-native-slide-down-panel.svg)](https://badge.fury.io/js/react-native-slide-down-panel)
 
-It's not yet published in npm. If you want to use it now, add the following into `package.json`:
-
-`"react-native-slide-down-panel": "https://github.com/holyxiaoxin/react-native-slide-down-panel.git#master",`
+```
+npm i react-native-slide-down-panel -S
+```
 
 Look at [/examples](examples/sample.js) for usage.
 <br>
