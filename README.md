@@ -15,3 +15,7 @@ Look at [/examples](examples/sample.js) for usage.
 <p align="center">
     <img src ="./slide-down.gif" />
 </p>
+
+## License
+
+This project is licenced under the [MIT License](http://opensource.org/licenses/mit-license.html).
