@@ -16,13 +16,7 @@
     "slide-down-panel"
   ],
   "scripts": {
-    "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib"
-  },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ]
+    "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib --presets es2015,react"
   },
   "peerDependencies": {
     "react-native": ">=0.23.0 || 0.23.0-rc1"
