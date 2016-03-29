@@ -16,7 +16,7 @@
     "slide-down-panel"
   ],
   "peerDependencies": {
-    "react-native": ">=0.22.0 || 0.23.0-rc1"
+    "react-native": ">=0.23.0 || 0.23.0-rc1"
   },
   "author": "Lim Jia Rong <jr.loves.maths@gmail.com>",
   "license": {
