@@ -1,15 +1,13 @@
-import React, { Component, Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
-
-var BASE_CONTAINER_HEIGHT = 40;
-
-var {
-  AppRegistry,
-  Text,
+import React, {
+  Component,
+  Dimensions,
   View,
   PanResponder,
-  Image
-} = React;
+} from 'react-native';
+import { Motion, spring } from 'react-motion';
+
+const { width, height } = Dimensions.get('window');
+const DEFAULT_CONTAINER_HEIGHT = 40;
 
 export default class SlideDownPanel extends Component {
   constructor(props) {
@@ -21,16 +19,14 @@ export default class SlideDownPanel extends Component {
     } = props;
 
     this.state = {
-      offsetTop: offsetTop != undefined ? offsetTop : BASE_CONTAINER_HEIGHT,
-      handlerHeight : handlerHeight != undefined ? handlerHeight: BASE_CONTAINER_HEIGHT,
-      containerHeight : handlerHeight != undefined ? handlerHeight: BASE_CONTAINER_HEIGHT,
-      containerMinimumHeight : handlerHeight != undefined ? handlerHeight: BASE_CONTAINER_HEIGHT,
+      offsetTop: offsetTop != undefined ? offsetTop : DEFAULT_CONTAINER_HEIGHT,
+      handlerHeight : handlerHeight != undefined ? handlerHeight: DEFAULT_CONTAINER_HEIGHT,
+      containerHeight : handlerHeight != undefined ? handlerHeight: DEFAULT_CONTAINER_HEIGHT,
+      containerMinimumHeight : handlerHeight != undefined ? handlerHeight: DEFAULT_CONTAINER_HEIGHT,
       containerMaximumHeight : containerMaximumHeight != undefined ? containerMaximumHeight : height,
       containerBackgroundColor : containerBackgroundColor != undefined ? containerBackgroundColor : 'white',
       containerOpacity : containerOpacity != undefined ? containerOpacity : 1,
-
       handlerView : handlerDefaultView,
-
       handlerBackgroundColor : handlerBackgroundColor != undefined ? handlerBackgroundColor : 'white',
       handlerOpacity : handlerOpacity != undefined ? handlerOpacity : 1
     };
@@ -56,37 +52,41 @@ export default class SlideDownPanel extends Component {
 
   render() {
     return (
-      <View
-        style = {{
-          position: 'absolute',
-          top: this.state.offsetTop,
-          opacity: this.state.containerOpacity,
-          height: this.state.containerHeight,
-          paddingBottom: this.state.leastContainerHeight,
-          backgroundColor : this.state.containerBackgroundColor
-        }}
-      >
-        {this.props.children}
-        <View
-          style = {{
-            height : this.state.handlerHeight,
-            width : width,
-            justifyContent : 'center',
-            opacity : this.state.handlerOpacity,
-            backgroundColor : this.state.handlerBackgroundColor}}
-          {...this.panResponder.panHandlers}
-        >
-          {this.state.handlerView}
-        </View>
-      </View>
+      <Motion style={{y: spring(this.state.containerHeight, { stiffness: 200, damping: 30 })}}>
+        {
+          ({y}) =>
+            <View
+              style = {{
+                position: 'absolute',
+                top: this.state.offsetTop,
+                opacity: this.state.containerOpacity,
+                height: y,
+                paddingBottom: this.state.leastContainerHeight,
+                backgroundColor : this.state.containerBackgroundColor
+              }}
+            >
+              {this.props.children}
+              <View
+                style = {{
+                  height : this.state.handlerHeight,
+                  width : width,
+                  justifyContent : 'center',
+                  opacity : this.state.handlerOpacity,
+                  backgroundColor : this.state.handlerBackgroundColor}}
+                {...this.panResponder.panHandlers}
+              >
+                {this.state.handlerView}
+              </View>
+            </View>
+        }
+      </Motion>
     )
   }
 
   handlePanResponderMove(e, gestureState) {
     const dy = gestureState.dy;
-    const y0 = gestureState.y0;
     const negativeY = -dy;
-
+    // current position is difference in distance since touchStart(dy) and displacement in y-axis at touchStart(dy)
     const positionY = negativeY + this.previousTop;
 
     // This check is to prevent the handler from moving out of it's boundry
@@ -104,11 +104,11 @@ export default class SlideDownPanel extends Component {
     const dy = gestureState.dy;
     const negativeY = -dy;
 
+    // Stores displacement in y-axis at touchStart
     this.previousTop = negativeY - this.state.containerHeight;
   }
 
   handlePanResponderEnd(e, gestureState) {
-
     let containerHeight;
     const dy = gestureState.dy;
 
@@ -120,10 +120,8 @@ export default class SlideDownPanel extends Component {
       }
     } else if (dy > 0) { // move down
       containerHeight = this.state.containerMaximumHeight;
-      this.previousTop += dy;
     } else { // move up
       containerHeight = this.state.containerMinimumHeight;
-      this.previousTop = -this.state.containerMinimumHeight;
     }
 
     this.setState({ containerHeight : containerHeight });
@@ -131,7 +129,6 @@ export default class SlideDownPanel extends Component {
     if (this.props.getContainerHeight != undefined) {
       this.props.getContainerHeight(containerHeight);
     }
-
   }
 
 }

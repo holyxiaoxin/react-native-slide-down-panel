@@ -7,6 +7,14 @@ Inspired by [react-native-sliding-up-panel](https://github.com/ninamanalo19/reac
 ```
 npm i react-native-slide-down-panel -S
 ```
+<br>
+Include these dependencies into `package.json`:
+```
+"peerDependencies": {
+  "react-native": ">=0.23.0 || 0.23.0-rc1",
+  "react-motion": "^0.4.2"
+},
+```
 
 Look at [/examples](examples/sample.js) for usage.
 <br>

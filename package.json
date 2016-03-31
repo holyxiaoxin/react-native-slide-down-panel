@@ -1,6 +1,6 @@
 {
   "name": "react-native-slide-down-panel",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "react native slide down panel",
   "main": "index.js",
   "repository": {
@@ -16,7 +16,8 @@
     "slide-down-panel"
   ],
   "peerDependencies": {
-    "react-native": ">=0.23.0 || 0.23.0-rc1"
+    "react-native": ">=0.23.0 || 0.23.0-rc1",
+    "react-motion": "^0.4.2"
   },
   "author": "Lim Jia Rong <jr.loves.maths@gmail.com>",
   "license": {
