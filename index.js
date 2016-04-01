@@ -3,6 +3,7 @@ import React, {
   Dimensions,
   View,
   PanResponder,
+  StyleSheet
 } from 'react-native';
 import { Motion, spring } from 'react-motion';
 
@@ -28,7 +29,8 @@ export default class SlideDownPanel extends Component {
       containerOpacity : containerOpacity != undefined ? containerOpacity : 1,
       handlerView : handlerDefaultView,
       handlerBackgroundColor : handlerBackgroundColor != undefined ? handlerBackgroundColor : 'white',
-      handlerOpacity : handlerOpacity != undefined ? handlerOpacity : 1
+      handlerOpacity : handlerOpacity != undefined ? handlerOpacity : 1,
+      isPanMoving: false
     };
   }
 
@@ -51,33 +53,69 @@ export default class SlideDownPanel extends Component {
   }
 
   render() {
+    // Can't get to use below refactoring to work. Need to refactor!
+    // const styles = {
+    //   contatiner: {
+    //     position: 'absolute',
+    //     top: this.state.offsetTop,
+    //     opacity: this.state.containerOpacity,
+    //     paddingBottom: this.state.leastContainerHeight,
+    //     backgroundColor : this.state.containerBackgroundColor
+    //   },
+    //   handler: {
+    //     height : this.state.handlerHeight,
+    //     width : width,
+    //     justifyContent : 'center',
+    //     opacity : this.state.handlerOpacity,
+    //     backgroundColor : this.state.handlerBackgroundColor
+    //   }
+    // };
+
+
     return (
-      <Motion style={{y: spring(this.state.containerHeight, { stiffness: 200, damping: 30 })}}>
+      this.state.isPanMoving ?
+      <View style={{
+        position: 'absolute',
+        top: this.state.offsetTop,
+        opacity: this.state.containerOpacity,
+        paddingBottom: this.state.leastContainerHeight,
+        backgroundColor : this.state.containerBackgroundColor,
+        height: this.state.containerHeight
+      }}>
+        {this.props.children}
+        <View style={{
+          height : this.state.handlerHeight,
+          width : width,
+          justifyContent : 'center',
+          opacity : this.state.handlerOpacity,
+          backgroundColor : this.state.handlerBackgroundColor
+        }} {...this.panResponder.panHandlers}>
+          {this.state.handlerView}
+        </View>
+      </View>
+      :
+      <Motion defaultStyle={{y: this.previousContainerHeight}} style={{y: spring(this.state.containerHeight, { stiffness: 200, damping: 30 })}}>
         {
-          ({y}) =>
-            <View
-              style = {{
-                position: 'absolute',
-                top: this.state.offsetTop,
-                opacity: this.state.containerOpacity,
-                height: y,
-                paddingBottom: this.state.leastContainerHeight,
-                backgroundColor : this.state.containerBackgroundColor
-              }}
-            >
+          ({y}) => (
+            <View style={[{
+              position: 'absolute',
+              top: this.state.offsetTop,
+              opacity: this.state.containerOpacity,
+              paddingBottom: this.state.leastContainerHeight,
+              backgroundColor : this.state.containerBackgroundColor
+            }, { height: y}]}>
               {this.props.children}
-              <View
-                style = {{
-                  height : this.state.handlerHeight,
-                  width : width,
-                  justifyContent : 'center',
-                  opacity : this.state.handlerOpacity,
-                  backgroundColor : this.state.handlerBackgroundColor}}
-                {...this.panResponder.panHandlers}
-              >
+              <View style={{
+                height : this.state.handlerHeight,
+                width : width,
+                justifyContent : 'center',
+                opacity : this.state.handlerOpacity,
+                backgroundColor : this.state.handlerBackgroundColor
+              }} {...this.panResponder.panHandlers}>
                 {this.state.handlerView}
               </View>
             </View>
+          )
         }
       </Motion>
     )
@@ -91,7 +129,7 @@ export default class SlideDownPanel extends Component {
 
     // This check is to prevent the handler from moving out of it's boundry
     if (positionY <= -this.state.containerMinimumHeight && positionY >= -this.state.containerMaximumHeight) {
-      this.setState({ containerHeight : -positionY });
+      this.setState({ containerHeight : -positionY, isPanMoving: true });
 
       // This will call getContainerHeight of parent component.
       if (this.props.getContainerHeight != undefined) {
@@ -112,7 +150,11 @@ export default class SlideDownPanel extends Component {
     let containerHeight;
     const dy = gestureState.dy;
 
-    if (dy == 0) { // not up or down
+    // Saves current state of containerHeight so that it can be used to
+    // travel off using <Motion/> from last point(this.previousContainerHeight)
+    this.previousContainerHeight = this.state.containerHeight;
+
+    if(this.previousTop == -this.state.containerHeight) { // not moved
       if(this.state.containerHeight == this.state.containerMaximumHeight) {
         containerHeight = this.state.containerMinimumHeight;
       } else {
@@ -124,7 +166,7 @@ export default class SlideDownPanel extends Component {
       containerHeight = this.state.containerMinimumHeight;
     }
 
-    this.setState({ containerHeight : containerHeight });
+    this.setState({ containerHeight : containerHeight, isPanMoving: false });
     // This will call getContainerHeight of parent component.
     if (this.props.getContainerHeight != undefined) {
       this.props.getContainerHeight(containerHeight);

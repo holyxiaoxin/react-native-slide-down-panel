@@ -16,7 +16,7 @@ Include these dependencies into `package.json`:
 },
 ```
 
-Look at [/examples](examples/sample.js) for usage.
+Look at [/examples](examples/sample.js) for usage. See at [changelogs](CHANGELOG.md) latest changes.
 <br>
 <br>
 <br>
