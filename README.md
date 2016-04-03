@@ -1,4 +1,4 @@
-# React native slide down panel
+# React native slide down panel (ios + android)
 
 Inspired by [react-native-sliding-up-panel](https://github.com/ninamanalo19/react-native-sliding-up-panel).
 
@@ -17,14 +17,15 @@ Include these dependencies into `package.json`:
 ```
 
 Look at [/examples](examples/sample.js) for usage. See at [changelogs](CHANGELOG.md) latest changes.
-<br>
-<br>
-<br>
-<br>
+
+<br><br><br><br>
 
 <p align="center">
     <img src ="./slide-down.gif" />
 </p>
+
+<br>
+
 
 ## License
 

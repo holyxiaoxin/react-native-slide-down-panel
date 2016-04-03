@@ -10,9 +10,9 @@ import React, { Component,
 import SlideDownPanel from 'react-native-slide-down-panel';
 const { width, height } = Dimensions.get('window');
 
-var MAXIMUM_HEIGHT = height - 200;
-var HANDLER_HEIGHT = 40;
-var OFFSET_TOP = 100;
+var MAXIMUM_HEIGHT = 200;
+var HANDLER_HEIGHT = 30;
+var OFFSET_TOP = 0;
 
 export default class SampleApp extends Component {
   constructor() {
@@ -28,101 +28,56 @@ export default class SampleApp extends Component {
 
   render() {
     return (
-      <View style={styles.parentContainer}>
+      <View>
         <View style={styles.backContainer}>
-          <Text style={styles.logText}>Panel Height: {this.state.containerHeight}</Text>
+          {this.props.children}
         </View>
         <SlideDownPanel
-            ref="panel"
-            offsetTop={OFFSET_TOP}
-            containerMaximumHeight={MAXIMUM_HEIGHT}
-            containerBackgroundColor="green"
-            handlerHeight={HANDLER_HEIGHT}
-            handlerDefaultView={<HandlerOne/>}
-            getContainerHeight={this.getContainerHeight.bind(this)}>
-          <View style={styles.frontContainer}>
-            <Text style={styles.panelText}>Hello guys!</Text>
-          </View>
+          ref="panel"
+          offsetTop={OFFSET_TOP}
+          initialHeight={MAXIMUM_HEIGHT}
+          containerMaximumHeight={MAXIMUM_HEIGHT}
+          handlerHeight={HANDLER_HEIGHT}
+          handlerDefaultView={<Handler/>}
+          getContainerHeight={this.getContainerHeight.bind(this)}
+        >
+          <FrontContainer />
         </SlideDownPanel>
       </View>
     )
   }
 }
 
-var HandlerOne = React.createClass({
-  render: function() {
-    return (
-      <Image style={styles.image} source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/3/39/Cloud_banner.jpg'}}>
-        <View style={styles.textContainer}>
-          <Text style={styles.handlerText}>Another Sample Text</Text>
-        </View>
-      </Image>
-    );
-  }
-});
+function FrontContainer() {
+  return (
+    <Text>
+      Hello World
+    </Text>
+  )
+}
 
-var HandlerTwo = React.createClass({
-  render: function() {
-    return (
-      <TouchableHighlight style={styles.button} underlayColor='transparent' onPress={this.onPress}>
-        <Text style={styles.handlerText}>Tap me!</Text>
-      </TouchableHighlight>
-    );
-  },
+function Handler() {
+  return (
+    <Image
+      style={styles.image}
+      source={{uri: 'https://pbs.twimg.com/profile_images/2370446440/6e2jwf7ztbr5t1yjq4c5.jpeg'}}
+    />
+  )
+}
 
-  onPress: function() {
-    AlertIOS.alert('Event Happened', 'You just tapped the button!', [{text: 'OK'}]);
-  }
-});
-
-var styles = StyleSheet.create({
-  parentContainer: {
-    flex : 1,
-    paddingTop: 60
-  },
-
+const styles = StyleSheet.create({
   backContainer: {
-    flex : 1,
-    backgroundColor : 'blue'
+    marginTop: HANDLER_HEIGHT
   },
-
   frontContainer: {
     flex : 1,
+    width: width,
+    backgroundColor: THEME_COLOR.DARK_WHITE
   },
-
-  logText: {
-    color : 'white',
-    fontWeight: '700',
-  },
-
-  panelText: {
-    color : 'white',
-  },
-
   image: {
     height : HANDLER_HEIGHT,
     width: width,
     alignItems: 'center',
     backgroundColor : 'gray'
   },
-
-  textContainer: {
-    backgroundColor : 'transparent',
-    height : HANDLER_HEIGHT,
-    justifyContent : 'center'
-  },
-
-  handlerText: {
-    color: 'white',
-    fontSize: 15,
-    fontWeight: '700',
-  },
-
-  button: {
-    backgroundColor : 'black',
-    justifyContent : 'center',
-    alignSelf : 'center',
-    padding: 5
-  }
-
 });
