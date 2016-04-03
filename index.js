@@ -22,7 +22,7 @@ export default class SlideDownPanel extends Component {
     this.state = {
       offsetTop: offsetTop != undefined ? offsetTop : DEFAULT_CONTAINER_HEIGHT,
       handlerHeight : handlerHeight != undefined ? handlerHeight: DEFAULT_CONTAINER_HEIGHT,
-      containerHeight : handlerHeight != undefined ? initialHeight: handlerHeight,
+      containerHeight : initialHeight != undefined && initialHeight > handlerHeight ? initialHeight: handlerHeight,
       containerMinimumHeight : handlerHeight != undefined ? handlerHeight: DEFAULT_CONTAINER_HEIGHT,
       containerMaximumHeight : containerMaximumHeight != undefined ? containerMaximumHeight : height,
       containerBackgroundColor : containerBackgroundColor != undefined ? containerBackgroundColor : 'white',
@@ -33,8 +33,9 @@ export default class SlideDownPanel extends Component {
       isPanMoving: false
     };
 
-    this.hasLoaded = false;
-    this.previousContainerHeight = initialHeight;
+    // Sets motions' default style to be intial height so that it doesn't animate on first render
+    // Container height must always start from handler height. That is the minimum height.
+    this.previousContainerHeight = initialHeight > handlerHeight ? initialHeight : handlerHeight;
   }
 
   componentWillMount() {
@@ -49,7 +50,6 @@ export default class SlideDownPanel extends Component {
   }
 
   componentDidMount() {
-    this.hasLoaded = true;
     // Make sure that handlerView is set
     if (this.state.handlerView == undefined) {
       throw "Set a handler view. Hint: It is a React Class."
@@ -76,7 +76,7 @@ export default class SlideDownPanel extends Component {
     };
 
     return (
-      this.state.isPanMoving || !this.hasLoaded ?
+      this.state.isPanMoving ?
       <View style={styles.container}>
         {this.props.children}
         <View style={styles.handler} {...this.panResponder.panHandlers}>
