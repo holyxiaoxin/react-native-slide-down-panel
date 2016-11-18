@@ -56,6 +56,11 @@ export default class SlideDownPanel extends Component {
     }
   }
 
+  setVisibleState(visible) {
+    const containerHeight = visible ? containerMaximumHeight : containerMinimumHeight;
+    this.setState({ containerHeight });
+  }
+
   render() {
     const styles = {
       container: {
