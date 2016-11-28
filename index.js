@@ -1,5 +1,5 @@
-import React, {
-  Component,
+import React, { Component } from 'react';
+import {
   Dimensions,
   View,
   PanResponder,
@@ -54,6 +54,12 @@ export default class SlideDownPanel extends Component {
     if (this.state.handlerView == undefined) {
       throw "Set a handler view. Hint: It is a React Class."
     }
+  }
+
+  setVisibleState(visible) {
+    const { containerMaximumHeight, containerMinimumHeight } = this.state;
+    const containerHeight = visible ? containerMaximumHeight : containerMinimumHeight;
+    this.setState({ containerHeight });
   }
 
   render() {
