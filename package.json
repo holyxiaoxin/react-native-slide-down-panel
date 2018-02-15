@@ -16,12 +16,16 @@
     "slide-down-panel"
   ],
   "peerDependencies": {
-    "react-native": ">=0.23.0 || 0.23.0-rc1",
-    "react-motion": "^0.4.2"
+    "react-native": ">=0.23.0 || 0.23.0-rc1"
   },
   "author": "Lim Jia Rong <jr.loves.maths@gmail.com>",
   "license": {
     "type": "MIT",
-    "url": "https://github.com/ninamanalo19/react-native-slide-down-panel/blob/master/LICENSE"
+    "url":
+      "https://github.com/ninamanalo19/react-native-slide-down-panel/blob/master/LICENSE"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.0",
+    "react-motion": "^0.5.0"
   }
 }

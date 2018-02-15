@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Dimensions, View, PanResponder } from "react-native";
+import PropTypes from "prop-types";
 import { Motion, spring } from "react-motion";
 
 const { width, height } = Dimensions.get("window");
@@ -180,3 +181,15 @@ export default class SlideDownPanel extends Component {
     }
   }
 }
+
+SlideDownPanel.propTypes = {
+  offsetTop: PropTypes.number,
+  handlerHeight: PropTypes.number,
+  initialHeight: PropTypes.number,
+  containerMaximumHeight: PropTypes.number,
+  containerBackgroundColor: PropTypes.string,
+  containerOpacity: PropTypes.number,
+  handlerDefaultView: PropTypes.element,
+  handlerBackgroundColor: PropTypes.string,
+  handlerOpacity: PropTypes.number
+};
