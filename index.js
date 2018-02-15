@@ -1,13 +1,8 @@
-import React, { Component } from 'react';
-import {
-  Dimensions,
-  View,
-  PanResponder,
-  StyleSheet
-} from 'react-native';
-import { Motion, spring } from 'react-motion';
+import React, { Component } from "react";
+import { Dimensions, View, PanResponder } from "react-native";
+import { Motion, spring } from "react-motion";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const DEFAULT_CONTAINER_HEIGHT = 40;
 
 export default class SlideDownPanel extends Component {
@@ -15,27 +10,45 @@ export default class SlideDownPanel extends Component {
     super(props);
 
     const {
-      offsetTop, handlerHeight, initialHeight, containerMaximumHeight, containerBackgroundColor,
-      containerOpacity, handlerDefaultView, handlerBackgroundColor, handlerOpacity
+      offsetTop,
+      handlerHeight,
+      initialHeight,
+      containerMaximumHeight,
+      containerBackgroundColor,
+      containerOpacity,
+      handlerDefaultView,
+      handlerBackgroundColor,
+      handlerOpacity
     } = props;
 
     this.state = {
       offsetTop: offsetTop != undefined ? offsetTop : DEFAULT_CONTAINER_HEIGHT,
-      handlerHeight : handlerHeight != undefined ? handlerHeight: DEFAULT_CONTAINER_HEIGHT,
-      containerHeight : initialHeight != undefined && initialHeight > handlerHeight ? initialHeight: handlerHeight,
-      containerMinimumHeight : handlerHeight != undefined ? handlerHeight: DEFAULT_CONTAINER_HEIGHT,
-      containerMaximumHeight : containerMaximumHeight != undefined ? containerMaximumHeight : height,
-      containerBackgroundColor : containerBackgroundColor != undefined ? containerBackgroundColor : 'white',
-      containerOpacity : containerOpacity != undefined ? containerOpacity : 1,
-      handlerView : handlerDefaultView,
-      handlerBackgroundColor : handlerBackgroundColor != undefined ? handlerBackgroundColor : 'white',
-      handlerOpacity : handlerOpacity != undefined ? handlerOpacity : 1,
+      handlerHeight:
+        handlerHeight != undefined ? handlerHeight : DEFAULT_CONTAINER_HEIGHT,
+      containerHeight:
+        initialHeight != undefined && initialHeight > handlerHeight
+          ? initialHeight
+          : handlerHeight,
+      containerMinimumHeight:
+        handlerHeight != undefined ? handlerHeight : DEFAULT_CONTAINER_HEIGHT,
+      containerMaximumHeight:
+        containerMaximumHeight != undefined ? containerMaximumHeight : height,
+      containerBackgroundColor:
+        containerBackgroundColor != undefined
+          ? containerBackgroundColor
+          : "white",
+      containerOpacity: containerOpacity != undefined ? containerOpacity : 1,
+      handlerView: handlerDefaultView,
+      handlerBackgroundColor:
+        handlerBackgroundColor != undefined ? handlerBackgroundColor : "white",
+      handlerOpacity: handlerOpacity != undefined ? handlerOpacity : 1,
       isPanMoving: false
     };
 
     // Sets motions' default style to be intial height so that it doesn't animate on first render
     // Container height must always start from handler height. That is the minimum height.
-    this.previousContainerHeight = initialHeight > handlerHeight ? initialHeight : handlerHeight;
+    this.previousContainerHeight =
+      initialHeight > handlerHeight ? initialHeight : handlerHeight;
   }
 
   componentWillMount() {
@@ -52,57 +65,61 @@ export default class SlideDownPanel extends Component {
   componentDidMount() {
     // Make sure that handlerView is set
     if (this.state.handlerView == undefined) {
-      throw "Set a handler view. Hint: It is a React Class."
+      throw "Set a handler view. Hint: It is a React Class.";
     }
   }
 
   setVisibleState(visible) {
     const { containerMaximumHeight, containerMinimumHeight } = this.state;
-    const containerHeight = visible ? containerMaximumHeight : containerMinimumHeight;
+    const containerHeight = visible
+      ? containerMaximumHeight
+      : containerMinimumHeight;
     this.setState({ containerHeight });
   }
 
   render() {
     const styles = {
       container: {
-        position: 'absolute',
-        overflow: 'hidden',
+        position: "absolute",
+        overflow: "hidden",
         top: this.state.offsetTop,
         opacity: this.state.containerOpacity,
-        backgroundColor : this.state.containerBackgroundColor,
+        backgroundColor: this.state.containerBackgroundColor,
         height: this.state.containerHeight
       },
       handler: {
-        height : this.state.handlerHeight,
-        width : width,
-        justifyContent : 'center',
-        opacity : this.state.handlerOpacity,
-        backgroundColor : this.state.handlerBackgroundColor
+        height: this.state.handlerHeight,
+        width: width,
+        justifyContent: "center",
+        opacity: this.state.handlerOpacity,
+        backgroundColor: this.state.handlerBackgroundColor
       }
     };
 
-    return (
-      this.state.isPanMoving ?
+    return this.state.isPanMoving ? (
       <View style={styles.container}>
         {this.props.children}
         <View style={styles.handler} {...this.panResponder.panHandlers}>
           {this.state.handlerView}
         </View>
       </View>
-      :
-      <Motion defaultStyle={{y: this.previousContainerHeight}} style={{y: spring(this.state.containerHeight, { stiffness: 200, damping: 30 })}}>
-        {
-          ({y}) => (
-            <View style={[styles.container, { height: y}]}>
-              {this.props.children}
-              <View style={styles.handler} {...this.panResponder.panHandlers}>
-                {this.state.handlerView}
-              </View>
+    ) : (
+      <Motion
+        defaultStyle={{ y: this.previousContainerHeight }}
+        style={{
+          y: spring(this.state.containerHeight, { stiffness: 200, damping: 30 })
+        }}
+      >
+        {({ y }) => (
+          <View style={[styles.container, { height: y }]}>
+            {this.props.children}
+            <View style={styles.handler} {...this.panResponder.panHandlers}>
+              {this.state.handlerView}
             </View>
-          )
-        }
+          </View>
+        )}
       </Motion>
-    )
+    );
   }
 
   handlePanResponderMove(e, gestureState) {
@@ -112,8 +129,11 @@ export default class SlideDownPanel extends Component {
     const positionY = negativeY + this.previousTop;
 
     // This check is to prevent the handler from moving out of it's boundry
-    if (positionY <= -this.state.containerMinimumHeight && positionY >= -this.state.containerMaximumHeight) {
-      this.setState({ containerHeight : -positionY, isPanMoving: true });
+    if (
+      positionY <= -this.state.containerMinimumHeight &&
+      positionY >= -this.state.containerMaximumHeight
+    ) {
+      this.setState({ containerHeight: -positionY, isPanMoving: true });
 
       // This will call getContainerHeight of parent component.
       if (this.props.getContainerHeight != undefined) {
@@ -138,23 +158,25 @@ export default class SlideDownPanel extends Component {
     // travel off using <Motion/> from last point(this.previousContainerHeight)
     this.previousContainerHeight = this.state.containerHeight;
 
-    if(this.previousTop == -this.state.containerHeight) { // not moved
-      if(this.state.containerHeight == this.state.containerMaximumHeight) {
+    if (this.previousTop == -this.state.containerHeight) {
+      // not moved
+      if (this.state.containerHeight == this.state.containerMaximumHeight) {
         containerHeight = this.state.containerMinimumHeight;
       } else {
         containerHeight = this.state.containerMaximumHeight;
       }
-    } else if (dy > 0) { // move down
+    } else if (dy > 0) {
+      // move down
       containerHeight = this.state.containerMaximumHeight;
-    } else { // move up
+    } else {
+      // move up
       containerHeight = this.state.containerMinimumHeight;
     }
 
-    this.setState({ containerHeight : containerHeight, isPanMoving: false });
+    this.setState({ containerHeight: containerHeight, isPanMoving: false });
     // This will call getContainerHeight of parent component.
     if (this.props.getContainerHeight != undefined) {
       this.props.getContainerHeight(containerHeight);
     }
   }
-
 }
