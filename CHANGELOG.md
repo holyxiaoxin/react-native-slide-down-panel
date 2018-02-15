@@ -25,3 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Bug Fix
 - Container height will start from initialHeight props. However, the least minimum height is the handler height.
 - Remove this.hasLoaded which cause container to animate unnecessarily when there is a state change in it's children. (On first render and second render, it was rendering differently even though there was no state change. This causes TextInput to lose focus due to animation on second render.)
+## [1.0.7] - 2018-02-15
+- Added PropType Validation
+- Linted and prettier'd file
+- Added .gitignore
