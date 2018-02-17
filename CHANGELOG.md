@@ -31,7 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Linted and prettier'd file
 - Added .gitignore
 
-## CHanged
+## Changed
 
 - updated README.md
 - Added new example app
