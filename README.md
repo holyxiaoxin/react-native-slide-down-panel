@@ -4,21 +4,26 @@ Inspired by [react-native-sliding-up-panel](https://github.com/ninamanalo19/reac
 
 [![npm version](https://badge.fury.io/js/react-native-slide-down-panel.svg)](https://badge.fury.io/js/react-native-slide-down-panel)
 
+## Installation
+
 ```
 npm i react-native-slide-down-panel -S
 ```
-<br>
-Include these dependencies into `package.json`:
-```
-"peerDependencies": {
-  "react-native": ">=0.23.0 || 0.23.0-rc1",
-  "react-motion": "^0.4.2"
-},
-```
 
-Look at [/examples](examples/sample.js) for usage. See at [changelogs](CHANGELOG.md) latest changes.
+## Demo
 
-<br><br><br><br>
+Look at [/examples/example](examples/example) for usage. You will need the react-native cli installed to run the example.
+
+- download the repo
+- `cd examples/example`
+- `npm install`
+- `react-native run-ios` or `react-native run-android`
+
+## Changelog
+
+See at [changelogs](CHANGELOG.md) latest changes.
+
+## Demo GIF
 
 <p align="center">
     <img src ="./slide-down.gif" />
